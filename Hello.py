@@ -32,6 +32,8 @@ def run():
         st.session_state['next_operation'] = None
     if 'next_number' not in st.session_state:
         st.session_state['next_number'] = ''
+    if 'enter_clicked' not in st.session_state:
+        st.session_state['enter_clicked'] = False
 
     LOGGER.info(st.session_state.result)
     LOGGER.info(st.session_state.result_text)
@@ -106,13 +108,35 @@ def run():
                     div[data-testid="stHorizontalBlock"]:nth-child(2) div[data-testid="column"]:nth-child(2) div[data-testid="element-container"]:nth-child(1) button p {
                         font-size: 18px;
                     }
+                    
+                    /* Result line */
+                    div[data-testid="stVerticalBlock"] div[data-testid="stVerticalBlock"] div.stMarkdown div[data-testid="stMarkdownContainer"] {
+                        width: 280px !important;
+                        overflow-x: auto;
+                    }
+                    div[data-testid="stVerticalBlock"] div[data-testid="stVerticalBlock"] div.stMarkdown div[data-testid="stMarkdownContainer"] p {
+                        word-break: normal;
+                        font-size: 20px;
+                        background-color: #333333;
+                    }
+
                 </style>
                 """,
                 unsafe_allow_html=True)
 
     def number_clicked(number):
+        if st.session_state.enter_clicked:
+            st.session_state.next_number = ''
+            st.session_state.enter_clicked = False
 
         st.session_state.next_number = str(st.session_state.next_number) + str(number)
+
+        if (int(st.session_state.next_number) > 4000) or (int(st.session_state.next_number) < 0):
+            st.warning('number out of range')
+        if (int(st.session_state.next_number) > 40000) or (int(st.session_state.next_number) < -1000):
+            st.error('bad boy')
+            st.session_state.next_number = ''
+
 
         # if st.session_state.next_operation is None:
         #    st.session_state.next_number = str(st.session_state.next_number) + str(number)
@@ -128,8 +152,10 @@ def run():
         # result_text = convert_decimal_to_roman(st.session_state.result)
         # st.session_state.result_text = convert_to_confusing_roman(result_text)
         st.session_state.result_text = st.session_state.next_number
+        st.session_state.result_text = convert_to_confusing_roman(convert_decimal_to_roman(st.session_state.result_text))
 
     def operation_clicked(operation):
+        st.session_state.enter_clicked = True
         if st.session_state.next_number == '':
             st.session_state.next_operation = operation
             return
@@ -144,11 +170,19 @@ def run():
         elif st.session_state.next_operation == '/':
             st.session_state.result = st.session_state.result / int(st.session_state.next_number)
 
+        if (st.session_state.result > 4000) or (st.session_state.result < 0):
+            st.warning('The Romans did not have a number for this.')
+        if (st.session_state.result > 40000) or (st.session_state.result < -1000):
+            st.error('Bad boy')
+            st.session_state.result = 0
+
+
         st.session_state.next_operation = operation
-        st.session_state.next_number = ''
         st.session_state.result_text = str(st.session_state.result)
+        st.session_state.result_text = convert_to_confusing_roman(convert_decimal_to_roman(st.session_state.result_text))
 
     def enter_clicked():
+        st.session_state.enter_clicked = True
         if st.session_state.next_number == '':
             return
         if st.session_state.next_operation is None:
@@ -162,6 +196,7 @@ def run():
         elif st.session_state.next_operation == '/':
             st.session_state.result = st.session_state.result / int(st.session_state.next_number)
         st.session_state.result_text = str(st.session_state.result)
+        st.session_state.result_text = convert_to_confusing_roman(convert_decimal_to_roman(st.session_state.result_text))
 
     def clear_clicked():
         st.session_state.next_operation = None
@@ -169,6 +204,9 @@ def run():
         st.session_state.result_text = 'N'
 
     def convert_decimal_to_roman(decimal):
+        if decimal == '':
+            return 'N'
+        decimal = int(decimal)
         values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
         symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
         roman = ''
@@ -217,7 +255,7 @@ def run():
     with container:
         use_roman = st.toggle('Use Roman keyboard', value=False)
         hcol1, hcol2 = st.columns(2)
-        hcol1.subheader(st.session_state.result_text)
+        hcol1.write(st.session_state.result_text)
         hcol2.button('Clear', on_click=clear_clicked)
 
         col1, col2, col3, col4 = st.columns(4)
@@ -259,7 +297,9 @@ def run():
         Idea by [xkcd](https://xkcd.com/2637/).
         Developed by [Odin](http://odinuv.com/).
             https://www.kapwing.com/6541e97954a77bfa0f6452fb/studio/editor
-        """)
+        """
+    )
+
 
 if __name__ == "__main__":
     run()
