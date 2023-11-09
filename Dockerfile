@@ -21,15 +21,14 @@ FROM python:3.11
 EXPOSE 8501
 
 # Upgrade pip and install requirements
-COPY requirements.txt requirements.txt
-RUN pip3 install -U pip
-RUN pip3 install -U streamlit
-RUN pip3 install -r requirements.txt
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir flake8 streamlit
+
+COPY . /app
+WORKDIR /app
+RUN pip install --no-cache-dir .
 
 # Copy app code and set working directory
-# COPY . /app
-WORKDIR /app
 
 # Run
-CMD ["streamlit", "run", "Hello.py", "--server.port=8501", "--server.address=0.0.0.0"]
-
+CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
