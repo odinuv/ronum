@@ -1,0 +1,22 @@
+name: GitHub Actions
+on: [ push ]
+concurrency: ci
+
+env:
+  APP_NAME: "ronum"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: |
+          docker build -t "$APP_NAME" .
+          docker run -p 8501:8501 "$APP_NAME"
+
+      - name: Test
+        run: |
+          docker run "$APP_NAME" python -m flake8
+          docker run "$APP_NAME" python -m unittest --verbose
