@@ -1,9 +1,8 @@
 import unittest
-
 from src.roman import convert_decimal_to_roman, convert_to_confusing_roman, get_number
 
 
-class RomanTest(unittest.TestCase):
+class TestRoman(unittest.TestCase):
     def test_convert_decimal_to_roman(self) -> None:
         self.assertEqual("N", convert_decimal_to_roman(0))
         self.assertEqual("I", convert_decimal_to_roman(1))

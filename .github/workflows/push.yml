@@ -14,7 +14,6 @@ jobs:
       - name: Build
         run: |
           docker build -t "$APP_NAME" .
-          docker run -p 8501:8501 "$APP_NAME"
 
       - name: Test
         run: |

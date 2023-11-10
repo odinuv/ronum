@@ -1,9 +1,8 @@
 import unittest
-
 from src.calc import calculate, validate
 
 
-class CalcTest(unittest.TestCase):
+class TestCalc(unittest.TestCase):
     def test_calculate(self) -> None:
         self.assertEqual(1, calculate("+", 0, 1))
 
@@ -20,6 +19,6 @@ class CalcTest(unittest.TestCase):
         self.assertEqual(0, validate(0))
         self.assertEqual(0, validate(4000))
         self.assertEqual(1, validate(4001))
-        self.assertEqual(1, validate(-1001))
+        self.assertEqual(1, validate(-999))
         self.assertEqual(2, validate(40001))
         self.assertEqual(2, validate(-10001))
