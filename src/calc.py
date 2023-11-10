@@ -10,10 +10,11 @@ def calculate(operation: str, memory: int, input_argument: int) -> int:
     else:
         raise ValueError(f"Unknown operation: {operation}")
 
+
 def validate(number: int) -> int:
-    if number >= 0 and number <= 4000:
+    if 0 <= number <= 4000:
         return 0
-    elif number > -1000 and number < 10000:
+    elif -1000 < number < 10000:
         return 1
     else:
         return 2
