@@ -1,10 +1,5 @@
-# flyctl launch added from .idea\.gitignore
-# Default ignored files
-.idea\shelf
-.idea\workspace.xml
-# Editor-based HTTP Client requests
-.idea\httpRequests
-
-# flyctl launch added from example\.gitignore
-example\**\node_modules
-fly.toml
+.idea/
+.git/
+.env*
+Dockerfile
+README.md
