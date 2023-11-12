@@ -90,7 +90,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual('N', at.markdown[1].value)
         self.assertEqual('Bad boy', at.error[0].value)
 
-    def test_run_key_pad_toggle(self) -> None:
+    def test_toggle_key_pad_only(self) -> None:
         self.cwd_root_directory()
 
         at = AppTest.from_file('main.py')
@@ -98,11 +98,51 @@ class TestApp(unittest.TestCase):
 
         roman_numeral = at.toggle[0]
         roman_numeral.set_value(True)
+
+        confuse_off = at.toggle[1]
+        confuse_off.set_value(False)
+
         at.run()
         button_4 = self.find_button(at, 'IV')
         button_4.click()
         at.run()
         self.assertEqual('15', at.markdown[1].value)
+
+    def test_toggle_key_pad_and_result(self) -> None:
+        self.cwd_root_directory()
+
+        at = AppTest.from_file('main.py')
+        at.run()
+
+        roman_numeral = at.toggle[0]
+        roman_numeral.set_value(True)
+
+        confuse_off = at.toggle[1]
+        confuse_off.set_value(True)
+
+        at.run()
+        button_4 = self.find_button(at, 'IV')
+        button_4.click()
+        at.run()
+        self.assertEqual('IV', at.markdown[1].value)
+
+    def test_toggle_to_decimal(self) -> None:
+        self.cwd_root_directory()
+
+        at = AppTest.from_file('main.py')
+        at.run()
+
+        roman_numeral = at.toggle[0]
+        roman_numeral.set_value(False)
+
+        confuse_off = at.toggle[1]
+        confuse_off.set_value(True)
+
+        at.run()
+        button_4 = self.find_button(at, '4')
+        button_4.click()
+        at.run()
+        self.assertEqual('4', at.markdown[1].value)
 
         # Does not work https://github.com/streamlit/streamlit/issues/7711
         # button_dot = self.find_button(at, '.')

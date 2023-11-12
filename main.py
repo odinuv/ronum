@@ -1,20 +1,19 @@
 import streamlit as st
+
 from src.calc import calculate, validate
 from src.roman import get_number, convert_to_confusing_roman, convert_decimal_to_roman
 
 
-def number_clicked(number):
+def number_clicked(number: int) -> None:
     if st.session_state.enter_clicked:
         st.session_state.next_number = '0'
         st.session_state.enter_clicked = False
 
     st.session_state.next_number = str(st.session_state.next_number) + str(number)
-    st.session_state.result_text = convert_to_confusing_roman(
-        convert_decimal_to_roman(int(st.session_state.next_number))
-    )
+    st.session_state.result_text = int(st.session_state.next_number)
 
 
-def operation_clicked(operation):
+def operation_clicked(operation: str) -> None:
     st.session_state.enter_clicked = True
     if st.session_state.next_operation is None:
         st.session_state.result = int(st.session_state.next_number)
@@ -28,12 +27,10 @@ def operation_clicked(operation):
     )
 
     st.session_state.next_operation = operation
-    st.session_state.result_text = convert_to_confusing_roman(
-        convert_decimal_to_roman(int(st.session_state.result))
-    )
+    st.session_state.result_text = int(st.session_state.result)
 
 
-def enter_clicked():
+def enter_clicked() -> None:
     st.session_state.enter_clicked = True
     if st.session_state.next_operation is None:
         st.session_state.result = int(st.session_state.next_number)
@@ -47,29 +44,27 @@ def enter_clicked():
         int(st.session_state.next_number)
     )
 
-    st.session_state.result_text = convert_to_confusing_roman(
-        convert_decimal_to_roman(int(st.session_state.result))
-    )
+    st.session_state.result_text = int(st.session_state.result)
 
 
-def clear():
+def clear() -> None:
     st.session_state.next_operation = None
     st.session_state.next_number = '0'
-    st.session_state.result_text = 'N'
+    st.session_state.result_text = '0'
     st.session_state.result = 0
 
 
-def clear_clicked():
+def clear_clicked() -> None:
     clear()
 
 
-def dot_clicked(info_container):
+def dot_clicked(info_container) -> None:
     info_container.info('FYI the Roman Numeral system included [fractions]('
                         'https://en.wikipedia.org/wiki/Roman_numerals#Fractions). Though not decimal, '
                         'but [duodecimal](https://en.wikipedia.org/wiki/Duodecimal).')
 
 
-def numlock_clicked(video_container):
+def numlock_clicked(video_container) -> None:
     video_container.markdown(
         '''<iframe width='462' height='822'
         src='https://www.youtube.com/embed/1bvtlQJ17qo?autoplay=1'
@@ -80,11 +75,11 @@ def numlock_clicked(video_container):
         unsafe_allow_html=True)
 
 
-def init_session():
+def init_session() -> None:
     if 'result' not in st.session_state:
         st.session_state['result'] = 0
     if 'result_text' not in st.session_state:
-        st.session_state['result_text'] = 'N'
+        st.session_state['result_text'] = '0'
     if 'next_operation' not in st.session_state:
         st.session_state['next_operation'] = None
     if 'next_number' not in st.session_state:
@@ -99,7 +94,7 @@ def init_session():
     # logger.info(st.session_state.enter_clicked)
 
 
-def run():
+def run() -> None:
     init_session()
 
     st.set_page_config(
@@ -208,13 +203,13 @@ def run():
     }
 
     /* Clear button */
-    div[data-testid='stHorizontalBlock']:nth-child(2) div[data-testid='column']:nth-child(2)
+    div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
     div[data-testid='element-container']:nth-child(1) button {
         height: 40px;
         margin-left: 98px;
         background-color: #fcd53f;
     }
-    div[data-testid='stHorizontalBlock']:nth-child(2) div[data-testid='column']:nth-child(2)
+    div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
     div[data-testid='element-container']:nth-child(1) button p {
         font-size: 18px;
     }
@@ -253,9 +248,16 @@ def run():
     container = st.container()
     with container:
         use_roman = st.toggle('Use Roman keyboard', value=False)
+        use_confuser = not st.toggle('Stop modernizing', value=False)
 
         head_col1, head_col2 = st.columns(2)
-        head_col1.write(st.session_state.result_text)
+
+        result = str(st.session_state.result_text)
+        if use_roman:
+            result = convert_decimal_to_roman(int(st.session_state.result_text))
+        if use_confuser:
+            result = convert_to_confusing_roman(convert_decimal_to_roman(int(st.session_state.result_text)))
+        head_col1.write(result)
         head_col2.button('Clear', on_click=clear_clicked)
 
         col1, col2, col3, col4 = st.columns(4)
@@ -278,7 +280,7 @@ def run():
         col3.button('.', on_click=dot_clicked, args=[container])
 
         col4.button('\\-', on_click=operation_clicked, args=['-'])
-        col4.button('\\+', on_click=operation_clicked, args=['+'])
+        col4.button('\\+', on_click=operation_clicked, args=['+',])
         col4.button('Enter', on_click=enter_clicked)
 
     st.markdown('<hr style="width:400px">', unsafe_allow_html=True)
