@@ -157,7 +157,6 @@ class TestApp(unittest.TestCase):
 
     @staticmethod
     def find_button(at: AppTest, label: str) -> Button:
-        # Finding the buttons by key doesn't seem to work, so we'll have to find by label
         for i in range(at.button.len):
             if at.button[i].label == label:
                 return at.button[i]

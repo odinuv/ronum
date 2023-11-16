@@ -1,17 +1,10 @@
-FROM python:3.11
+FROM python:3.11-slim
 
-# Expose port you want your app on
 EXPOSE 8501
-
-# Upgrade pip and install requirements
-RUN python -m pip install --upgrade pip
-RUN pip install --no-cache-dir flake8 streamlit
+RUN python -m pip install --no-cache-dir --upgrade pip
 
 COPY . /app
 WORKDIR /app
 RUN pip install --no-cache-dir .
 
-# Copy app code and set working directory
-
-# Run
 CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]

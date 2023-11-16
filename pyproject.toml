@@ -19,5 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "streamlit",
+    # def dependencies
+    "flake8"
 ]
 dynamic = ["version"]

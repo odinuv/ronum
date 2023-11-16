@@ -94,6 +94,140 @@ def init_session() -> None:
     # logger.info(st.session_state.enter_clicked)
 
 
+def get_css() -> str:
+    return '''
+        /* calc layout */
+        div[data-testid='stVerticalBlock'] {
+            width: 370px;
+            margin: auto;
+        }
+        div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] {
+            width: auto;
+        }
+        div[data-testid='stHorizontalBlock'] {
+            width: 370px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='element-container'] {
+            margin: auto;
+            width: fit-content !important;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='element-container'] {
+            margin: auto;
+            width: fit-content !important;
+        }
+
+        /* All buttons */
+        div[data-testid='stHorizontalBlock'] div[data-testid='element-container']
+        button[data-testid='baseButton-secondary'] {
+            background-color: #00a6ed;
+            width: 80px;
+            height: 80px;
+            display: block;
+            margin: auto;
+            color: #000000;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='element-container']
+        button[data-testid='baseButton-secondary'] p {
+            font-size: 32px;
+        }
+
+        /* Plus button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
+        div[data-testid='element-container']:nth-child(2) button {
+            height: 176px;
+            background-color: #00d26a;
+        }
+
+        /* Enter button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
+        div[data-testid='element-container']:nth-child(3) button {
+            background-color: #fcd53f;
+            height: 176px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
+        div[data-testid='element-container']:nth-child(3) button p {
+            font-size: 18px;
+        }
+
+        /* Zero button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
+        div[data-testid='element-container']:nth-child(5) button {
+            width: 176px;
+        }
+
+        /* Numlock button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
+        div[data-testid='element-container']:nth-child(1) button p {
+            font-size: 18px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
+        div[data-testid='element-container']:nth-child(1) button {
+            background-color: #fcd53f;
+        }
+
+        /* Division button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(2)
+        div[data-testid='element-container']:nth-child(1) button p {
+            font-size: 18px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(2)
+        div[data-testid='element-container']:nth-child(1) button {
+            background-color: #00d26a;
+        }
+
+        /* Multiplication button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(3)
+        div[data-testid='element-container']:nth-child(1) button p {
+            font-size: 18px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(3)
+        div[data-testid='element-container']:nth-child(1) button {
+            background-color: #00d26a;
+        }
+
+        /* Minus button */
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
+        div[data-testid='element-container']:nth-child(1) button p {
+            font-size: 18px;
+        }
+        div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
+        div[data-testid='element-container']:nth-child(1) button {
+            background-color: #00d26a;
+        }
+
+        /* Clear button */
+        div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
+        div[data-testid='element-container']:nth-child(1) button {
+            height: 40px;
+            margin-left: 98px;
+            background-color: #fcd53f;
+        }
+        div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
+        div[data-testid='element-container']:nth-child(1) button p {
+            font-size: 18px;
+        }
+
+        /* Result line */
+        div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] div.stMarkdown
+        div[data-testid='stMarkdownContainer'] {
+            width: 280px !important;
+            overflow-x: auto;
+        }
+        div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] div.stMarkdown
+        div[data-testid='stMarkdownContainer'] p {
+            word-break: normal;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 20px;
+            background-color: #333333;
+        }
+
+        div.stAlert {
+            width: 400px;
+        }
+        '''
+
+
 def run() -> None:
     init_session()
 
@@ -102,137 +236,7 @@ def run() -> None:
         page_icon=':abacus:',
     )
 
-    css_style = '''
-    /* calc layout */
-    div[data-testid='stVerticalBlock'] {
-        width: 370px;
-        margin: auto;
-    }
-    div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] {
-        width: auto;
-    }
-    div[data-testid='stHorizontalBlock'] {
-        width: 370px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='element-container'] {
-        margin: auto;
-        width: fit-content !important;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='element-container'] {
-        margin: auto;
-        width: fit-content !important;
-    }
-
-    /* All buttons */
-    div[data-testid='stHorizontalBlock'] div[data-testid='element-container']
-    button[data-testid='baseButton-secondary'] {
-        background-color: #00a6ed;
-        width: 80px;
-        height: 80px;
-        display: block;
-        margin: auto;
-        color: #000000;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='element-container']
-    button[data-testid='baseButton-secondary'] p {
-        font-size: 32px;
-    }
-
-    /* Plus button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
-    div[data-testid='element-container']:nth-child(2) button {
-        height: 176px;
-        background-color: #00d26a;
-    }
-
-    /* Enter button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
-    div[data-testid='element-container']:nth-child(3) button {
-        background-color: #fcd53f;
-        height: 176px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
-    div[data-testid='element-container']:nth-child(3) button p {
-        font-size: 18px;
-    }
-
-    /* Zero button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
-    div[data-testid='element-container']:nth-child(5) button {
-        width: 176px;
-    }
-
-    /* Numlock button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
-    div[data-testid='element-container']:nth-child(1) button p {
-        font-size: 18px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(1)
-    div[data-testid='element-container']:nth-child(1) button {
-        background-color: #fcd53f;
-    }
-
-    /* Division button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(2)
-    div[data-testid='element-container']:nth-child(1) button p {
-        font-size: 18px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(2)
-    div[data-testid='element-container']:nth-child(1) button {
-        background-color: #00d26a;
-    }
-
-    /* Multiplication button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(3)
-    div[data-testid='element-container']:nth-child(1) button p {
-        font-size: 18px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(3)
-    div[data-testid='element-container']:nth-child(1) button {
-        background-color: #00d26a;
-    }
-
-    /* Minus button */
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
-    div[data-testid='element-container']:nth-child(1) button p {
-        font-size: 18px;
-    }
-    div[data-testid='stHorizontalBlock'] div[data-testid='column']:nth-child(4)
-    div[data-testid='element-container']:nth-child(1) button {
-        background-color: #00d26a;
-    }
-
-    /* Clear button */
-    div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
-    div[data-testid='element-container']:nth-child(1) button {
-        height: 40px;
-        margin-left: 98px;
-        background-color: #fcd53f;
-    }
-    div[data-testid='stHorizontalBlock']:nth-child(3) div[data-testid='column']:nth-child(2)
-    div[data-testid='element-container']:nth-child(1) button p {
-        font-size: 18px;
-    }
-
-    /* Result line */
-    div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] div.stMarkdown
-    div[data-testid='stMarkdownContainer'] {
-        width: 280px !important;
-        overflow-x: auto;
-    }
-    div[data-testid='stVerticalBlock'] div[data-testid='stVerticalBlock'] div.stMarkdown
-    div[data-testid='stMarkdownContainer'] p {
-        word-break: normal;
-        padding-left: 10px;
-        padding-right: 10px;
-        font-size: 20px;
-        background-color: #333333;
-    }
-
-    div.stAlert {
-        width: 400px;
-    }
-    '''
+    css_style = get_css()
     st.markdown(f'<style>{css_style}</style>', unsafe_allow_html=True)
     video_container = st.container()
 
