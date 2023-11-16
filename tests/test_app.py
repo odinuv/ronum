@@ -88,7 +88,7 @@ class TestApp(unittest.TestCase):
         at.run()
 
         self.assertEqual('N', at.markdown[1].value)
-        self.assertEqual('Bad boy', at.error[0].value)
+        self.assertEqual('Bad boy, you ignored the warning', at.error[0].value)
 
     def test_toggle_key_pad_only(self) -> None:
         self.cwd_root_directory()

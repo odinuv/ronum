@@ -58,21 +58,8 @@ def clear_clicked() -> None:
     clear()
 
 
-def dot_clicked(info_container) -> None:
-    info_container.info('FYI the Roman Numeral system included [fractions]('
-                        'https://en.wikipedia.org/wiki/Roman_numerals#Fractions). Though not decimal, '
-                        'but [duodecimal](https://en.wikipedia.org/wiki/Duodecimal).')
-
-
-def numlock_clicked(video_container) -> None:
-    video_container.markdown(
-        '''<iframe width='462' height='822'
-        src='https://www.youtube.com/embed/1bvtlQJ17qo?autoplay=1'
-        title='A fight between NumLock &amp; ScrollLock' frameborder='0'
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-        allowfullscreen>
-        </iframe>''',
-        unsafe_allow_html=True)
+def numlock_clicked() -> None:
+    st.session_state['display_fight'] = not st.session_state['display_fight']
 
 
 def init_session() -> None:
@@ -86,6 +73,9 @@ def init_session() -> None:
         st.session_state['next_number'] = '0'
     if 'enter_clicked' not in st.session_state:
         st.session_state['enter_clicked'] = False
+    if 'display_fight' not in st.session_state:
+        st.session_state['display_fight'] = False
+
     # logger = get_logger(__name__)
     # logger.info(st.session_state.result)
     # logger.info(st.session_state.result_text)
@@ -238,12 +228,20 @@ def run() -> None:
 
     css_style = get_css()
     st.markdown(f'<style>{css_style}</style>', unsafe_allow_html=True)
-    video_container = st.container()
+    if st.session_state['display_fight']:
+        st.markdown(
+            '''<iframe width='462' height='822'
+            src='https://www.youtube.com/embed/1bvtlQJ17qo?autoplay=1'
+            title='A fight between NumLock &amp; ScrollLock' frameborder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            allowfullscreen>
+            </iframe>''',
+            unsafe_allow_html=True)
 
     st.title('A confusing calculator :abacus:')
 
     if validate(st.session_state.result) == 2 or validate(int(st.session_state.next_number)) == 2:
-        st.error('Bad boy')
+        st.error('Bad boy, you ignored the warning')
         st.image('static/bad_romans.jpg', width=400)
         clear()
     elif validate(st.session_state.result) == 1 or validate(int(st.session_state.next_number)) == 1:
@@ -266,7 +264,7 @@ def run() -> None:
 
         col1, col2, col3, col4 = st.columns(4)
 
-        col1.button('Num Lock', on_click=numlock_clicked, args=[video_container])
+        col1.button('Num Lock', on_click=numlock_clicked)
         col1.button(get_number(7, use_roman), on_click=number_clicked, args=[7])
         col1.button(get_number(4, use_roman), on_click=number_clicked, args=[4])
         col1.button(get_number(1, use_roman), on_click=number_clicked, args=[1])
@@ -281,10 +279,13 @@ def run() -> None:
         col3.button(get_number(9, use_roman), on_click=number_clicked, args=[9])
         col3.button(get_number(6, use_roman), on_click=number_clicked, args=[6])
         col3.button(get_number(3, use_roman), on_click=number_clicked, args=[3])
-        col3.button('.', on_click=dot_clicked, args=[container])
+        if col3.button('.'):
+            st.info('FYI the Roman Numeral system included [fractions]('
+                    'https://en.wikipedia.org/wiki/Roman_numerals#Fractions). Though not decimal, '
+                    'but [duodecimal](https://en.wikipedia.org/wiki/Duodecimal).')
 
         col4.button('\\-', on_click=operation_clicked, args=['-'])
-        col4.button('\\+', on_click=operation_clicked, args=['+',])
+        col4.button('\\+', on_click=operation_clicked, args=['+', ])
         col4.button('Enter', on_click=enter_clicked)
 
     st.markdown('<hr style="width:400px">', unsafe_allow_html=True)
